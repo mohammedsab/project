@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+{% load static %}
+<!--  -->
+
+<head>
+    <meta charset="utf-8">
+    <!-- <link href="pdf.css" media="print" rel="stylesheet">
+    <link href="pdf.css" rel="stylesheet"> -->
+
+    <title>Invoice</title>
+    <meta name="passenger details" content="information about passenger visa.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+    <pdf:language name="arabic" />
+
+</head>
+
+<body>
+    <pdf:language name="arabic" />
+    <header>
+        <div class="first-header">
+            <img src="{% static 'image/barcode.png' %}" alt="barcode">
+        </div>
+        <div class="second-header">
+            <div></div>
+            <img class="main-logo" src="{% static 'image/main-logo.png' %}" alt="البوابة المصرية للعمرات">
+            <img class="secondry-logo" src="{% static 'image/ministry.jpg' %}" alt="وزارة السياحة">
+        </div>
+    </header>
+    <main>
+        <p class="table-header">
+            بيانات المعتمر
+        </p>
+    </main>
+
+
+    <table>
+        <tr>
+            <th>رقم التأشيرة</th>
+            <td>{{passenger.visa_number}}</td>
+            <th>تبدأ</th>
+            <td>{{passenger.visa_start}}</td>
+            <th>صلاحية الموافقة</th>
+            <td>{{passenger.visa_end}}</td>
+        </tr>
+        <tr>
+            <th>نوع التأشبرة</th>
+            <td>{{passenger.visa_type}}</td>
+        </tr>
+        <tr>
+            <th>الاسم بالعربي</th>
+            <td>{{passenger.arabic_name}}</td>
+        </tr>
+        <tr>
+            <th>الاسم باللاتيني</th>
+            <td>{{passenger.english_name}}</td>
+        </tr>
+
+        <tr>
+            <th>الرقم القومي</th>
+            <td>{{passenger.national_id}}</td>
+        </tr>
+
+        <tr>
+            <th>تاريخ الميلاد</th>
+            <td>{{passenger.data_of_birth}}</td>
+        </tr>
+
+        <tr>
+            <th>رقم الجواز</th>
+            <td>{{passenger.passport_number}}</td>
+            <th>يبدأ</th>
+            <td>{{passenger.passport_start}}</td>
+            <th>ينتهى</th>
+            <td>{{passenger.passport_end}}</td>
+        </tr>
+        <tr>
+            <th>تابع لشركة</th>
+            <td>{{passenger.company.number}}</td>
+        </tr>
+    </table>
+
+    <p>إلي مصلحة الجوازات والهجرة والجنسية:</p>
+    <p>يرجى الاحاطة بأن هذه الموافقة صحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتها والتأكد من صحة التأشبرة.</p>
+
+    <div class="qrcode">
+        <img src="data:image/png;base64,{{ qr_image_data }}" alt="QR Code" />
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Passenger information
+{% endblock title %}
+
+info: {{passenger.arabic_name}}
+{% block content %}
+<div class="table-wrapper">
+    <table>
+        <tbody>
+            <tr>
+                <div class="table-header">بيانات المسافر</div>
+            </tr>
+            <tr>
+                <th>رقم ترخيص شركة السياحة</th>
+                <td>{{passenger.company.number}}</td>
+            </tr>
+            <tr>
+                <th>شركة السياحة</th>
+                <td>{{passenger.company.name}}</td>
+            </tr>
+            <tr>
+                <th>الاسم</th>
+                <td>{{passenger.arabic_name}}</td>
+            </tr>
+            <tr>
+                <th>رقم جواز السفر</th>
+                <td>{{passenger.passport_number}}</td>
+            </tr>
+            <tr>
+                <th>الرقم القومي</th>
+                <td>{{passenger.national_id}}</td>
+            </tr>
+            <tr>
+                <th>رقم التأشيرة</th>
+                <td>{{passenger.visa_number}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="table-wrapper">
+    <div class="table-header">
+        <p class="head">صلاحية الباركود</p>
+        <p class="title-passenger-data">صلاحية الباركود 7 ايام من تاريخ الاصدار</p>
+    </div>
+    <table>
+        <tbody>
+            <!-- <tr>
+                    <th class="table-header">صلاحية الباركود</th>
+                    <td class="table-header">صلاحية الباركود 7 ايام من تاريخ الاصدار</td>
+                </tr> -->
+            <tr>
+                <th>تاريخ الاصدار</th>
+                <td class="barcode-date">10-10-1010</td>
+            </tr>
+            <tr>
+                <th>تاريخ الانتهاء</th>
+                <td class="barcode-date">20-20-2023</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="barcode-ended">
+        <p>تم الانتهاء صلاحية الباركود</p>
+    </div>
+</div>
+
+
+<!-- <button class="btn default" onclick="location.href='{% url 'mysite:detail_pdf' passenger.national_id %}'">حفظ الملف</button> -->
+<a class="btn default" href="{% url 'mysite:detail_pdf' passenger.national_id %}" target="_blank">
+    حفظ الملف
+</a>
+{% endblock content %}

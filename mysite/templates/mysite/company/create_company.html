@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    اضافة شركة
+{% endblock title  %}
+    
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.name.label}}
+        {{form.name}}
+        {{form.number.label}}
+        {{form.number}}
+        <input type="submit" value="حفظ">
+    </form>
+{% endblock content %}
+    

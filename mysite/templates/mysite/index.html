@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+البوابة المصرية للعمرة
+{% endblock title %}
+
+
+{% block content %}
+<div class="container-page">
+    <div class="container-form">
+        <h5 class="form-title">يرجى إدخال رقم جواز السفر أو الرقم القومي</h5>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-inputs">
+                <div class="float-container">
+                    <div class="input-icon"><img width="20px" src="{% static 'image/passport-icon.png' %}" alt="passport-icon"></div>
+                    <div class="input-content">
+                        <label for="floatField"> رقم جواز السفر / الرقم القومي</label>
+                        {{form.search}}
+                        <!-- <input type="text" id="floatField" placeholder="********************"> -->
+                    </div>
+                </div>
+                
+
+                {{form.captcha}}
+                <div class="mybooking-input-wrapper">
+                    <button class="submit-input" type="submit">بحث جديد</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock content %}
