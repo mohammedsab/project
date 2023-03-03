@@ -1,98 +1,71 @@
-<!DOCTYPE html>
-<html dir="rtl" lang="ar">
+{% load i18n %}
 {% load static %}
-<!--  -->
-
-<head>
-    <meta charset="utf-8">
-    <!-- <link href="pdf.css" media="print" rel="stylesheet">
-    <link href="pdf.css" rel="stylesheet"> -->
-
-    <title>Invoice</title>
-    <meta name="passenger details" content="information about passenger visa.">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap');
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            font-family: 'Outfit', sans-serif;
-        }
-    </style>
-    <pdf:language name="arabic" />
-
-</head>
-
+<html>
 <body>
-    <pdf:language name="arabic" />
-    <header>
-        <div class="first-header">
-            <img src="{% static 'image/barcode.png' %}" alt="barcode">
-        </div>
-        <div class="second-header">
-            <div></div>
-            <img class="main-logo" src="{% static 'image/main-logo.png' %}" alt="البوابة المصرية للعمرات">
-            <img class="secondry-logo" src="{% static 'image/ministry.jpg' %}" alt="وزارة السياحة">
-        </div>
-    </header>
-    <main>
-        <p class="table-header">
-            بيانات المعتمر
-        </p>
-    </main>
+  <img src="{% static 'image/logo1.png' %}" width="100px" alt="jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj">
+  محمد احمد علي
+  <h1>{% trans "My shop" %}</h1>
+  <p>
+    {% trans "Invoice no." %} {{ order.id }}<br>
+    <span class="secondary">
+      {{ order.created|date:"M d, Y" }}
+    </span>
+  </p>
+  <h3>{% trans "Bill to" %}</h3>
+  <p>
+    {{ order.first_name }} {{ order.last_name }}<br>
+    {{ order.email }}<br>
+    {{ order.address }}<br>
+    {{ order.postal_code }}, {{ order.city }}
+  </p>
+  <h3>{% trans "Items bought" %}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>{% trans "Product" %}</th>
+        <th>{% trans "Price" %}</th>
+        <th>{% trans "Quantity" %}</th>
+        <th>{% trans "Cost" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in order.items.all %}
+        <tr class="row{% cycle "1" "2" %}">
+          <td>{{ item.product.name }}</td>
+          <td class="num">${{ item.price }}</td>
+          <td class="num">{{ item.quantity }}</td>
+          <td class="num">${{ item.get_cost }}</td>
+        </tr>
+      {% endfor %}
 
+      {% if order.coupon %}
+        <tr class="subtotal">
+          <td colspan="3">{% trans "Subtotal" %}</td>
+          <td class="num">
+            ${{ order.get_total_cost_before_discount|floatformat:2 }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            {% blocktrans with code=order.coupon.code discount=order.discount %}
+              "{{ code }}" ({{ discount }}% off)
+            {% endblocktrans %}
+          </td>
+          <td class="num neg">
+            - ${{ order.get_discount|floatformat:2 }}
+          </td>
+        </tr>
+      {% endif %}
 
-    <table>
-        <tr>
-            <th>رقم التأشيرة</th>
-            <td>{{passenger.visa_number}}</td>
-            <th>تبدأ</th>
-            <td>{{passenger.visa_start}}</td>
-            <th>صلاحية الموافقة</th>
-            <td>{{passenger.visa_end}}</td>
-        </tr>
-        <tr>
-            <th>نوع التأشبرة</th>
-            <td>{{passenger.visa_type}}</td>
-        </tr>
-        <tr>
-            <th>الاسم بالعربي</th>
-            <td>{{passenger.arabic_name}}</td>
-        </tr>
-        <tr>
-            <th>الاسم باللاتيني</th>
-            <td>{{passenger.english_name}}</td>
-        </tr>
+      <tr class="total">
+        <td colspan="3">{% trans "Total" %}</td>
+        <td class="num">${{ order.get_total_cost|floatformat:2 }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-        <tr>
-            <th>الرقم القومي</th>
-            <td>{{passenger.national_id}}</td>
-        </tr>
-
-        <tr>
-            <th>تاريخ الميلاد</th>
-            <td>{{passenger.data_of_birth}}</td>
-        </tr>
-
-        <tr>
-            <th>رقم الجواز</th>
-            <td>{{passenger.passport_number}}</td>
-            <th>يبدأ</th>
-            <td>{{passenger.passport_start}}</td>
-            <th>ينتهى</th>
-            <td>{{passenger.passport_end}}</td>
-        </tr>
-        <tr>
-            <th>تابع لشركة</th>
-            <td>{{passenger.company.number}}</td>
-        </tr>
-    </table>
-
-    <p>إلي مصلحة الجوازات والهجرة والجنسية:</p>
-    <p>يرجى الاحاطة بأن هذه الموافقة صحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتها والتأكد من صحة التأشبرة.</p>
-
-    <div class="qrcode">
-        <img src="data:image/png;base64,{{ qr_image_data }}" alt="QR Code" />
-    </div>
+  <span class="{% if order.paid %}paid{% else %}pending{% endif %}">
+    {% if order.paid %}{% trans "Paid" %}{% else %}{% trans "Pending payment" %}{% endif %}
+  </span>
 </body>
-
 </html>

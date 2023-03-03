@@ -26,7 +26,7 @@ class PassengerModelForm(forms.ModelForm):
     class Meta:
         model = Passenger
         fields = ('arabic_name', 'english_name', 'national_id', 'data_of_birth', 'passport_number',
-                    'passport_start', 'passport_end', 'visa_type', 'visa_number', 'visa_start', 'visa_end', 'company')
+                    'passport_start', 'passport_end', 'visa_type', 'visa_number', 'visa_start', 'visa_end', 'company',  )
         labels = {
             'arabic_name': 'الاسم بالعربي',
             'english_name': 'الاسم الإنجليزية',

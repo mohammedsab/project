@@ -36,6 +36,14 @@
         background-color: royalblue;
     }
 
+    footer {
+        background-color: #2c2c2c;
+        padding: 5px 0;
+        /* position: absolute; */
+        bottom: 0;
+        width: 100%;
+    }
+
     /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
     @media (max-width: 800px) {
         .form-inline input {
@@ -47,6 +55,62 @@
             align-items: stretch;
         }
     }
+
+
+
+    /* *************************************** */
+    #passengers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #passengers td,
+    #passengers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #passengers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #passengers tr:hover {
+        background-color: #ddd;
+    }
+
+    #passengers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: right;
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+
+    .save {
+        background-color: #4CAF50;
+    }
+
+    /* Green */
+    .delete {
+        background-color: #f44336;
+    }
+
+    /* Red */
 </style>
 {% endblock style_sheet %}
 
@@ -63,13 +127,41 @@
     {{form.name}}
     <label for="pwd">الرقم (الكود)</label>
     {{form.number}}
-    <button type="submit">Submit</button>
+    <button type="submit">حفظ</button>
 </form>
-<ul>
 
+
+<table id="passengers">
+    <tr>
+        <th>اسم الشركة</th>
+        <th>الرقم (الكود)</th>
+        <th></th>
+        <th></th>
+    </tr>
     {% for company in companies %}
-    <li>{{company.name}}</li>
-    {% endfor %}
 
-</ul>
+    <tr>
+        <td>{{company.name}}</td>
+        <td>{{company.number}}</td>
+        <td><button class="button save">تعديل</button></td>
+        <form method="POST" action="{% url 'mysite:companyDelete' company.number %}">
+            {% csrf_token %}
+            <td><button type="submit" class="button delete" onclick="return confirmDelete('{{ company.name }}');">حذف</button>
+            </td>
+        </form>
+        
+    </tr>
+
+    {% endfor %}
+</table>
+<script>
+    function confirmDelete(name) {
+        if (confirm("هل انت متأكد من حذف \"" + name + "\"؟")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
 {% endblock content %}

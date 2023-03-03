@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
 from django.db.models import Q
+from django.template.loader import render_to_string
+from django.conf import settings
+
+import weasyprint
 
 
 from .models import Passenger, Company
@@ -46,8 +50,30 @@ def createPassenger(request):
         return render(request, 'mysite/create_new_passenger.html', {'form': form, 'section': 'new_passenger'})
 
 
+def passengerEdit(request, national_id):
+    print(national_id,'********************')
+    passenger = get_object_or_404(Passenger, national_id=national_id)
+    if request.method == 'POST':
+        form = PassengerModelForm(request.POST, instance=passenger)
+        if form.is_valid():
+            form.save()
+            return redirect('mysite:index')
+    else:
+        form = PassengerModelForm(instance=passenger)
+        print(form)
+    return render(request, 'mysite/create_new_passenger.html', {'form': form, 'passenger': passenger, 'section': 'new_passenger'})
+
+
+def passengerDelete(request, national_id):
+    passenger = get_object_or_404(Passenger, national_id=national_id)
+    if request.method == 'POST':
+        passenger.delete()
+        return redirect('mysite:index')
+    # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
+
+
 def companyList(request):
-    
+
     if request.method == 'POST':
         form = CompanyForm(request.POST)
         if form.is_valid():
@@ -55,21 +81,10 @@ def companyList(request):
             # return render(request, 'mysite/company/company_list.html', { 'companies': companies, 'section': 'company'})
 
             return redirect('mysite:company_list')
-    
+
     companies = Company.objects.all()
     form = CompanyForm()
     return render(request, 'mysite/company/company_list.html', {'form': form, 'companies': companies, 'section': 'company'})
-
-
-# def compnayCreate(request):
-#     if request.method == 'POST':
-#         form = CompanyForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('mysite:company_list')
-#     else:
-#         form = CompanyForm
-#     return render(request, 'mysite/company/create_company.html', {'form': form, 'section': 'company'})
 
 
 def companyEdit(request, company_number):
@@ -88,7 +103,41 @@ def companyDelete(request, company_number):
     company = get_object_or_404(Company, number=company_number)
     if request.method == 'POST':
         company.delete()
-        return redirect('company_list')
-    return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
+        return redirect('mysite:company_list')
+    # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
 
 
+# def getPassengerPDF(request, national_id):
+#     passenger = get_object_or_404(Passenger, national_id=national_id)
+#     html = render_to_string('mysite/pdf/pdf.html', {'passenger':passenger})
+
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'filename={passenger.arabic_name}.pdf'
+
+#     weasyprint.HTML(string=html).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT / 'css/pdf.css')])
+#     return response
+
+
+# from django.http import HttpResponse
+# from django.template.loader import render_to_string
+from django_weasyprint import WeasyTemplateResponse
+
+
+def getPassengerPDF(request, national_id):
+    # Get some data from your Django application
+    data = {}
+
+    # Render the HTML template using the data
+    html_string = render_to_string('mysite/pdf/pdf_test.html', {'data': data})
+
+    # Generate a PDF response using WeasyPrint
+    response = WeasyTemplateResponse(request=request, 
+                                     template='mysite/pdf/pdf_test.html', 
+                                     context={'data': data})
+
+    # Set the response headers
+    response['Content-Disposition'] = 'attachment; filename="my_document.pdf"'
+    response['Content-Type'] = 'application/pdf'
+
+    # Return the response
+    return response

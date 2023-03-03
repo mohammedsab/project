@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test HTML File</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test HTML File</h1>
+    <p>This is a test HTML file with a photo:</p>
+    <img src="{% static 'image/logo1.png' %}" alt="Test Photo">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget lectus urna. Integer et enim justo. Duis
+        consequat eleifend lacus, eget fringilla dolor malesuada et. Sed iaculis tincidunt diam in bibendum. Donec
+        interdum odio nulla, vel euismod augue sagittis sit amet. Vivamus eu enim sit amet enim fermentum convallis.
+        Praesent tristique mollis nisi, id congue augue semper vel. Donec euismod libero a metus ultrices, sed
+        consectetur nisi euismod. Praesent vel elit elit. Ut suscipit, enim non elementum viverra, magna nunc bibendum
+        velit, a dictum nibh nunc vitae lorem. Donec condimentum purus a interdum facilisis. Fusce condimentum tellus at
+        turpis maximus auctor. Duis viverra sem quis enim pulvinar auctor.</p>
+</body>
+
+</html>

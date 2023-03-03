@@ -26,7 +26,7 @@
     }
 
     input[type=submit] {
-        background-color: #04AA6D;
+        background-color: #aaa504;
         color: white;
         padding: 12px 20px;
         border: none;
@@ -36,7 +36,7 @@
     }
 
     input[type=submit]:hover {
-        background-color: #45a049;
+        background-color: #787402;
     }
 
     .container {
@@ -91,7 +91,7 @@
         {% for field in form %}
         <div class="row">
             <div class="col-25">
-                <label for="fname">{{field.label}}</label>
+                <label>{{field.label}}</label>
             </div>
             <div class="col-75">
                 {{field}}
@@ -101,7 +101,7 @@
         {% endfor %}
         
         <div class="row">
-            <input type="submit" value="Submit">
+            <input type="submit" value="حفظ">
         </div>
     </form>
 </div>
