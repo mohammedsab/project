@@ -127,12 +127,12 @@ import qrcode
 def generate_qrcode(request):
     # assuming product number is passed as a GET parameter
     national_id = request.GET.get('national_id')
-    qr = qrcode.QRCode(version=1, box_size=20, border=5)
-    qr.add_data(national_id)
+    qr = qrcode.QRCode(version=1, box_size=2, border=2)
+    qr.add_data('mohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awad')
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
-    width, height = img.size
-    img = img.resize((width*4, height*4), resample=0)
+    # width, height = img.size
+    # img = img.resize((width*4, height*4), resample=0)
     response = HttpResponse(content_type="image/png")
     img.save(response, "PNG")
     return response
