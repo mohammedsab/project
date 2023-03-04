@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="{% static 'css/pdf2.css' %}" media="print" rel="stylesheet"> -->
+    <!-- <link href="{% static 'css/pdf2.css' %}" rel="stylesheet"> -->
+
+    <title>Invoice</title>
+    <meta name="passenger details" content="information about passenger visa.">
+    <style>
+        @page {
+            size: Letter;
+            margin: 0.25in;
+            
+        }
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            color: #14213d;
+            font-family: Source Sans Pro;
+            font-size: 11pt;
+            line-height: 1.6;
+        }
+
+        body {
+            min-height: 100%;
+            margin: 15px;
+            border: 2px solid black;
+        }
+
+        .first-header {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .first-header img {
+            height: 70px;
+            /* display: flex; */
+            /* flex-direction: row-reverse; */
+        }
+
+
+
+        .main-logo {
+            height: 130px;
+        }
+
+        .secondry-logo {
+            height: 105px;
+        }
+
+        .second-header div {
+            width: 100px;
+        }
+
+        .second-header {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row-reverse;
+            margin: 0 25px;
+        }
+
+        .table-header {
+            margin: 10px 35px;
+            text-decoration: underline;
+            font-weight: 800;
+            font-size: medium;
+            color: #8b7501;
+        }
+
+        table {
+            padding: 30px 30px 20px 20px;
+            margin: 0 auto;
+        }
+
+        th {
+            color: 8b7501;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="first-header">
+            <img src="{% static 'image/barcode.png' %}" alt="barcode">
+        </div>
+        <div class="second-header">
+            <div></div>
+            <img class="main-logo" src="{% static 'image/main-logo.png' %}" alt="البوابة المصرية للعمرات">
+            <img class="secondry-logo" src="{% static 'image/main-logo.png' %}" alt="وزارة السياحة">
+        </div>
+    </header>
+    <main>
+        <p class="table-header">
+            بيانات المعتمر
+        </p>
+    </main>
+
+
+    <table>
+        <tr>
+            <th>رقم التأشيرة</th>
+            <td>4545454545454</td>
+            <th>تبدأ</th>
+            <td>4-10-2014</td>
+            <th>صلاحية الموافقة</th>
+            <td>45/74/2014</td>
+        </tr>
+        <tr>
+            <th>نوع التأشبرة</th>
+            <td>زيارة شخصية</td>
+        </tr>
+        <tr>
+            <th>الاسم بالعربي</th>
+            <td>محمد صابر عوض علي</td>
+        </tr>
+        <tr>
+            <th>الاسم باللاتيني</th>
+            <td>Mohammed saber awad ali</td>
+        </tr>
+
+        <tr>
+            <th>الرقم القومي</th>
+            <td>محمد صابر عوض علي</td>
+        </tr>
+
+        <tr>
+            <th>تاريخ الميلاد</th>
+            <td>محمد صابر عوض علي</td>
+        </tr>
+
+        <tr>
+            <th>رقم الجواز</th>
+            <td>4545454545454</td>
+            <th>يبدأ</th>
+            <td>4-10-2014</td>
+            <th>ينتهى</th>
+            <td>45/74/2014</td>
+        </tr>
+        <tr>
+            <th>تابع لشركة</th>
+            <td>محمد صابر عوض علي</td>
+        </tr>
+    </table>
+
+    <p>إلي مصلحة الجوازات والهجرة والجنسية:</p>
+    <p>يرجى الاحاطة بأن هذه الموافقة صحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتها والتأكد من صحة التأشبرة.</p>
+
+    <img src="{% url 'mysite:generate_qrcode' %}?national_id={{ passenger.national_id }}" alt="QR Code">
+
+</body>
+
+</html>

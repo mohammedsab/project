@@ -121,18 +121,32 @@ def companyDelete(request, company_number):
 # from django.http import HttpResponse
 # from django.template.loader import render_to_string
 from django_weasyprint import WeasyTemplateResponse
+import qrcode
 
+
+def generate_qrcode(request):
+    # assuming product number is passed as a GET parameter
+    national_id = request.GET.get('national_id')
+    qr = qrcode.QRCode(version=1, box_size=20, border=5)
+    qr.add_data(national_id)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    width, height = img.size
+    img = img.resize((width*4, height*4), resample=0)
+    response = HttpResponse(content_type="image/png")
+    img.save(response, "PNG")
+    return response
 
 def getPassengerPDF(request, national_id):
     # Get some data from your Django application
     data = {}
 
     # Render the HTML template using the data
-    html_string = render_to_string('mysite/pdf/pdf_test.html', {'data': data})
+    html_string = render_to_string('mysite/pdf/pdf2.html', {'data': data})
 
     # Generate a PDF response using WeasyPrint
     response = WeasyTemplateResponse(request=request, 
-                                     template='mysite/pdf/pdf_test.html', 
+                                     template='mysite/pdf/pdf2.html', 
                                      context={'data': data})
 
     # Set the response headers
