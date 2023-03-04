@@ -35,7 +35,7 @@ class Passenger(models.Model):
     created = models.DateTimeField(default=timezone.now, blank=True)
 
     def get_absolute_url(self):
-        return f"/passenger/{self.national_id}/"
+        return reverse('mysite:passenger_details', args=[self.national_id])
 
     def __str__(self):
         return self.arabic_name

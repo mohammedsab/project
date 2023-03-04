@@ -1,3 +1,7 @@
+from django.utils import timezone
+from datetime import timedelta
+import qrcode
+from django_weasyprint import WeasyTemplateResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
@@ -35,7 +39,14 @@ def index(request):
 
 def passengerDetails(request, national_id):
     passenger = get_object_or_404(Passenger, national_id=national_id)
-    return render(request, 'mysite/passenger_details.html', {'passenger': passenger})
+    is_within_7_days = True
+    now = timezone.now()
+    
+    delta = now - passenger.created
+    print(f'{now}--------{delta}')
+    if delta <= timedelta(days=7):
+        is_within_7_days = False
+    return render(request, 'mysite/passenger_details.html', {'passenger': passenger, 'is_within_7_days': is_within_7_days})
 
 
 def createPassenger(request):
@@ -51,7 +62,7 @@ def createPassenger(request):
 
 
 def passengerEdit(request, national_id):
-    print(national_id,'********************')
+    print(national_id, '********************')
     passenger = get_object_or_404(Passenger, national_id=national_id)
     if request.method == 'POST':
         form = PassengerModelForm(request.POST, instance=passenger)
@@ -107,28 +118,11 @@ def companyDelete(request, company_number):
     # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
 
 
-# def getPassengerPDF(request, national_id):
-#     passenger = get_object_or_404(Passenger, national_id=national_id)
-#     html = render_to_string('mysite/pdf/pdf.html', {'passenger':passenger})
-
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = f'filename={passenger.arabic_name}.pdf'
-
-#     weasyprint.HTML(string=html).write_pdf(response, stylesheets=[weasyprint.CSS(settings.STATIC_ROOT / 'css/pdf.css')])
-#     return response
-
-
-# from django.http import HttpResponse
-# from django.template.loader import render_to_string
-from django_weasyprint import WeasyTemplateResponse
-import qrcode
-
-
 def generate_qrcode(request):
     # assuming product number is passed as a GET parameter
-    national_id = request.GET.get('national_id')
-    qr = qrcode.QRCode(version=1, box_size=2, border=2)
-    qr.add_data('mohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awadmohammed saber awad')
+    passenger_url = request.GET.get('passenger_url')
+    qr = qrcode.QRCode(version=15, box_size=3, border=2)
+    qr.add_data(f'{passenger_url}')
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     # width, height = img.size
@@ -137,20 +131,23 @@ def generate_qrcode(request):
     img.save(response, "PNG")
     return response
 
+
 def getPassengerPDF(request, national_id):
     # Get some data from your Django application
+    passenger = Passenger.objects.get(national_id=national_id)
     data = {}
 
     # Render the HTML template using the data
-    html_string = render_to_string('mysite/pdf/pdf2.html', {'data': data})
+    html_string = render_to_string(
+        'mysite/pdf/pdf2.html', {'passenger': passenger})
 
     # Generate a PDF response using WeasyPrint
-    response = WeasyTemplateResponse(request=request, 
-                                     template='mysite/pdf/pdf2.html', 
-                                     context={'data': data})
+    response = WeasyTemplateResponse(request=request,
+                                     template='mysite/pdf/pdf2.html',
+                                     context={'passenger': passenger})
 
     # Set the response headers
-    response['Content-Disposition'] = 'attachment; filename="my_document.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="{passenger.arabic_name}.pdf"'
     response['Content-Type'] = 'application/pdf'
 
     # Return the response

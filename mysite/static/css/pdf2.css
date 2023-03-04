@@ -81,8 +81,41 @@ body {
 table {
     padding: 30px 30px 20px 20px;
     margin: 0 auto;
+    text-align: center;
 }
 
 th {
-    color: 8b7501;
+    display: inline-block;
+    color: #8b7501;
+    margin-left: 20px;
+    font-size: large;
+    font-weight: 500;
+
+}
+
+td {
+    /* margin: 20px; */
+    padding: 5px 10px;
+    width: fit-content;
+    border-bottom: 5px solid #8d8a8a;
+
+}
+
+.in-th {
+    display: inline;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.in-td {
+    width: 120px;
+}
+
+.end-title {
+    margin: 0 30px;
+    font-weight: bold;
+}
+
+.end {
+    margin: 0 30px;
 }

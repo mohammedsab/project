@@ -25,6 +25,10 @@
     .delete {
         background-color: #f44336;
     }
+    .admin-buttons{
+        display: flex;
+        justify-content: center;
+    }
 </style>
 {% endblock style_sheet %}
 
@@ -89,9 +93,14 @@ info: {{passenger.arabic_name}}
             </tr>
         </tbody>
     </table>
-    <div class="barcode-ended">
-        <p>تم الانتهاء صلاحية الباركود</p>
-    </div>
+    
+    {% if is_within_7_days %}
+        <div class="barcode-ended">
+            <p>تم الانتهاء صلاحية الباركود</p>
+        </div>
+    {% endif %}
+        
+    
 </div>
 
 
@@ -99,16 +108,21 @@ info: {{passenger.arabic_name}}
 <a class="btn default" href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
     حفظ الملف
 </a>
-<form method="POST" action="{% url 'mysite:passengerEdit' passenger.national_id %}">
-    {% csrf_token %}
-    <button type="submit" class="button delete"
-        >تعديل بيانات</button>
-</form>
-<form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
-    {% csrf_token %}
-    <button type="submit" class="button delete"
-        onclick="return confirmDelete('{{ passenger.arabic_name }}');">حذف</button>
-</form>
+
+{% if request.user.is_authenticated %}
+    <div class="admin-buttons">
+        <form method="POST" action="{% url 'mysite:passengerEdit' passenger.national_id %}">
+            {% csrf_token %}
+            <button type="submit" class="button delete">تعديل بيانات</button>
+        </form>
+        <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
+            {% csrf_token %}
+            <button type="submit" class="button delete"
+                onclick="return confirmDelete('{{ passenger.arabic_name }}');">حذف</button>
+        </form>
+    </div>
+{% endif %}
+    
 
 <script>
     function confirmDelete(name) {

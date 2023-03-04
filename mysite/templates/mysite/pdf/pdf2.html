@@ -9,13 +9,13 @@
     <!-- <link href="{% static 'css/pdf2.css' %}" media="print" rel="stylesheet"> -->
     <!-- <link href="{% static 'css/pdf2.css' %}" rel="stylesheet"> -->
 
-    <title>Invoice</title>
+    <title>{{passenger.arabic_name}}</title>
     <meta name="passenger details" content="information about passenger visa.">
     <style>
         @page {
             size: Letter;
-            margin: 0.25in;
-            
+            margin: 0.15in;
+            min-height: 100%;
         }
 
 
@@ -26,14 +26,13 @@
         }
 
         html {
-            color: #14213d;
             font-family: Source Sans Pro;
             font-size: 11pt;
             line-height: 1.6;
         }
 
         body {
-            min-height: 100%;
+            min-height: 10.85in;
             margin: 15px;
             border: 2px solid black;
         }
@@ -44,7 +43,7 @@
         }
 
         .first-header img {
-            height: 70px;
+            height: 50px;
             /* display: flex; */
             /* flex-direction: row-reverse; */
         }
@@ -56,7 +55,7 @@
         }
 
         .secondry-logo {
-            height: 105px;
+            height: 100px;
         }
 
         .second-header div {
@@ -79,12 +78,62 @@
         }
 
         table {
-            padding: 30px 30px 20px 20px;
+            padding: 30px 60px 20px 60px;
             margin: 0 auto;
+            text-align: center;
         }
 
         th {
-            color: 8b7501;
+            display: inline-block;
+            color: #8b7501;
+            margin-left: 20px;
+            font-size: large;
+            font-weight: 500;
+
+        }
+
+        td {
+            /* margin: 20px; */
+            padding: 5px 10px;
+            width: fit-content;
+            border-bottom: 5px solid #8d8a8a;
+
+        }
+
+        .in-th {
+            display: inline;
+            margin: 0;
+            padding: 0 10px;
+            width: 50px;
+        }
+
+        .in-td {
+            width: 120px;
+        }
+
+        .end-title {
+            margin: 0 30px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 30px;
+
+        }
+
+        .end {
+            display: inline-block;
+            margin: 0 30px 15px 0;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
         }
     </style>
 </head>
@@ -110,53 +159,60 @@
     <table>
         <tr>
             <th>رقم التأشيرة</th>
-            <td>4545454545454</td>
-            <th>تبدأ</th>
-            <td>4-10-2014</td>
-            <th>صلاحية الموافقة</th>
-            <td>45/74/2014</td>
+            <td>{{passenger.visa_number}}</td>
+            <th class="in-th">تبدأ</th>
+            <td class="in-td">{{passenger.visa_start|date:"Y-n-j"}}</td>
+            <th class="in-th">صلاحية الموافقة</th>
+            <td class="in-td">{{passenger.visa_end|date:"Y-n-j"}}</td>
         </tr>
         <tr>
             <th>نوع التأشبرة</th>
-            <td>زيارة شخصية</td>
+            <td colspan="5">{{passenger.visa_type}}</td>
         </tr>
         <tr>
             <th>الاسم بالعربي</th>
-            <td>محمد صابر عوض علي</td>
+            <td colspan="5">{{passenger.arabic_name}}</td>
         </tr>
         <tr>
             <th>الاسم باللاتيني</th>
-            <td>Mohammed saber awad ali</td>
+            <td colspan="5">{{passenger.english_name}}</td>
         </tr>
 
         <tr>
             <th>الرقم القومي</th>
-            <td>محمد صابر عوض علي</td>
+            <td colspan="5">{{passenger.national_id}}</td>
         </tr>
 
         <tr>
             <th>تاريخ الميلاد</th>
-            <td>محمد صابر عوض علي</td>
+            <td colspan="5">{{passenger.data_of_birth|date:"Y-n-j"}}</td>
         </tr>
 
         <tr>
             <th>رقم الجواز</th>
-            <td>4545454545454</td>
-            <th>يبدأ</th>
-            <td>4-10-2014</td>
-            <th>ينتهى</th>
-            <td>45/74/2014</td>
+            <td>{{passenger.passport_number}}</td>
+            <th class="in-th">يبدأ</th>
+            <td class="in-td">{{passenger.passport_start|date:"Y-n-j"}}</td>
+            <th class="in-th">ينتهى</th>
+            <td class="in-td">{{passenger.passport_end|date:"Y-n-j"}}</td>
         </tr>
         <tr>
             <th>تابع لشركة</th>
-            <td>محمد صابر عوض علي</td>
+            <td colspan="5">{{passenger.company.nubmer}}</td>
         </tr>
     </table>
 
-    <p>إلي مصلحة الجوازات والهجرة والجنسية:</p>
-    <p>يرجى الاحاطة بأن هذه الموافقة صحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتها والتأكد من صحة التأشبرة.</p>
+    <u>
+        <p class="end-title">إلي مصلحة الجوازات والهجرة والجنسية:</p>
+    </u>
+    <p class="end">يرجى الاحاطة بأن هذه الموافقة صحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتها والتأكد من صحة
+        التأشبرة.
+    </p>
 
-    <img src="{% url 'mysite:generate_qrcode' %}?national_id={{ passenger.national_id }}" alt="QR Code">
+    <div class="image-container">
+        <img src="{% url 'mysite:generate_qrcode' %}?passenger_url={{ passenger.get_absolute_url }}" alt="QR Code">
+    </div>
+
 
 </body>
 
