@@ -57,3 +57,6 @@ class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = ('name', 'number')
+        widgets = {
+            'number': forms.NumberInput(attrs={'type':'number'})
+        }

@@ -104,10 +104,10 @@ def companyEdit(request, company_number):
         form = CompanyForm(request.POST, instance=company)
         if form.is_valid():
             form.save()
-            return redirect('company_list')
+            return redirect('mysite:company_list')
     else:
         form = CompanyForm(instance=company)
-    return render(request, 'mysite/company_edit.html', {'form': form, 'section': 'company'})
+    return render(request, 'mysite/company/company_list.html', {'form': form, 'section': 'company'})
 
 
 def companyDelete(request, company_number):
