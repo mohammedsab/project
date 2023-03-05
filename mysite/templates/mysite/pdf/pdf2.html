@@ -6,8 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="{% static 'css/pdf2.css' %}" media="print" rel="stylesheet"> -->
-    <!-- <link href="{% static 'css/pdf2.css' %}" rel="stylesheet"> -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
 
     <title>{{passenger.arabic_name}}</title>
     <meta name="passenger details" content="information about passenger visa.">
@@ -23,6 +24,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Cairo', sans-serif;
         }
 
         html {
@@ -146,7 +148,7 @@
         <div class="second-header">
             <div></div>
             <img class="main-logo" src="{% static 'image/main-logo.png' %}" alt="البوابة المصرية للعمرات">
-            <img class="secondry-logo" src="{% static 'image/main-logo.png' %}" alt="وزارة السياحة">
+            <img class="secondry-logo" src="{% static 'image/ministry.png' %}" alt="وزارة السياحة">
         </div>
     </header>
     <main>
@@ -209,9 +211,14 @@
         التأشبرة.
     </p>
 
+
+    {% comment %}
     <div class="image-container">
         <img src="{% url 'mysite:generate_qrcode' %}?passenger_url={{ passenger.get_absolute_url }}" alt="QR Code">
     </div>
+    {% endcomment %}
+
+
 
 
 </body>
