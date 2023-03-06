@@ -39,3 +39,6 @@ class Passenger(models.Model):
 
     def __str__(self):
         return self.arabic_name
+
+    class Meta:
+        ordering = ['-created']

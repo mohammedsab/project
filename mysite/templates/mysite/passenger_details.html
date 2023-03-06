@@ -21,11 +21,20 @@
         background-color: #4CAF50;
     }
 
+    footer {
+        background-color: #2c2c2c;
+        padding: 5px 0;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
     /* Green */
     .delete {
         background-color: #f44336;
     }
-    .admin-buttons{
+
+    .admin-buttons {
         display: flex;
         justify-content: center;
     }
@@ -85,44 +94,48 @@ info: {{passenger.arabic_name}}
                 </tr> -->
             <tr>
                 <th>تاريخ الاصدار</th>
-                <td class="barcode-date">10-10-1010</td>
+                <td class="barcode-date">{{passenger.created|date:"d-m-Y"}}</td>
             </tr>
             <tr>
                 <th>تاريخ الانتهاء</th>
-                <td class="barcode-date">20-20-2023</td>
+                <td class="barcode-date">{{one_week_from_now|date:"d-m-Y"}}</td>
             </tr>
         </tbody>
     </table>
-    
+
     {% if is_within_7_days %}
-        <div class="barcode-ended">
-            <p>تم الانتهاء صلاحية الباركود</p>
-        </div>
+    <div class="barcode-ended">
+        <p>تم الانتهاء صلاحية الباركود</p>
+    </div>
+
+    {% else %}
+    <div class="barcode-ended">
+        <p style="color: green;">الباركود مفعل
+        <p>
+    </div>
     {% endif %}
-        
-    
+
+
 </div>
 
-
-<!-- <button class="btn default" onclick="location.href='{% url 'mysite:detail_pdf' passenger.national_id %}'">حفظ الملف</button> -->
-<a class="btn default" href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
-    حفظ الملف
-</a>
-
 {% if request.user.is_authenticated %}
-    <div class="admin-buttons">
-        <form method="POST" action="{% url 'mysite:passengerEdit' passenger.national_id %}">
+<!-- <button class="btn default" onclick="location.href='{% url 'mysite:detail_pdf' passenger.national_id %}'">حفظ الملف</button> -->
+<div class="admin-buttons">
+    <a class="btn default" href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
+        حفظ الملف
+    </a>
+    <!-- <form method="POST" action="{% url 'mysite:passengerEdit' passenger.national_id %}">
             {% csrf_token %}
             <button type="submit" class="button delete">تعديل بيانات</button>
-        </form>
-        <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
-            {% csrf_token %}
-            <button type="submit" class="button delete"
-                onclick="return confirmDelete('{{ passenger.arabic_name }}');">حذف</button>
-        </form>
-    </div>
+        </form> -->
+    <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
+        {% csrf_token %}
+        <button type="submit" class="button delete"
+            onclick="return confirmDelete('{{ passenger.arabic_name }}');">حذف</button>
+    </form>
+</div>
 {% endif %}
-    
+
 
 <script>
     function confirmDelete(name) {

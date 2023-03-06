@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+قائمة العملاء
+{% endblock title %}
+
+
+{% block style_sheet %}
+<style>
+    /* Style the form - display items horizontally */
+    .form-inline {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+
+    /* Add some margins for each label */
+    .form-inline label {
+        margin: 5px 10px 5px 10px;
+        display: contents;
+    }
+
+    /* Style the input fields */
+    .form-inline input {
+        vertical-align: middle;
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+    }
+
+    /* Style the submit button */
+    .form-inline button {
+        padding: 10px 20px;
+        background-color: dodgerblue;
+        border: 1px solid #ddd;
+        color: white;
+    }
+
+    .form-inline button:hover {
+        background-color: royalblue;
+    }
+
+    footer {
+        background-color: #2c2c2c;
+        padding: 5px 0;
+        /* position: absolute; */
+        bottom: 0;
+        width: 100%;
+    }
+
+    /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+    @media (max-width: 800px) {
+        .form-inline input {
+            margin: 10px 0;
+        }
+
+        .form-inline {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+
+
+    /* *************************************** */
+    #passengers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #passengers td,
+    #passengers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #passengers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #passengers tr:hover {
+        background-color: #ddd;
+    }
+
+    #passengers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: right;
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .pass-btn {
+        height: 30px;
+    }
+
+
+
+    /* Red */
+</style>
+{% endblock style_sheet %}
+
+{% block content %}
+<table id="passengers">
+    <tr>
+        <th>الاسم</th>
+        <th>رقم الجواز </th>
+        <th>تاريخ التسجيل</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for passenger in passengers %}
+
+    <tr>
+        <td>{{passenger.arabic_name}}</td>
+        <td>{{passenger.passport_number}}</td>
+        <td>{{passenger.created}}</td>
+<td>
+    <a href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
+        <img class="pass-btn" src="{% static 'image/download.png' %}" alt="">
+    </a>
+</td>
+        <td>
+            
+            <a href="{% url 'mysite:company_edit' passenger.national_id %}">
+                <img class="pass-btn" src="{% static 'image/edit.png' %}" alt="">
+            </a>
+
+
+        </td>
+        <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
+            {% csrf_token %}
+            <td>
+                <button type="submit" class="button delete"
+                    onclick="return confirmDelete('{{ passenger.arabic_name}}');">
+                    <img class="pass-btn" src="{% static 'image/delete.png' %}" alt="">
+                </button>
+            </td>
+        </form>
+
+    </tr>
+
+    {% endfor %}
+</table>
+<script>
+    function confirmDelete(name) {
+        if (confirm("هل انت متأكد من حذف \"" + name + "\"؟")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+{% endblock content %}

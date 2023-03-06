@@ -28,10 +28,10 @@ def index(request):
             if passenger:
                 return redirect('mysite:passenger_details', national_id=passenger.national_id)
             else:
-                # messages.error(request, 'لم يتم العثور علي بيانات')
-                form.add_error('search', 'passenger not found')
+                messages.error(request, 'لم يتم العثور علي بيانات')
+                # form.add_error('search', 'passenger not found')
             # passengerDetails(pk=passenger.id)
-                # return render(request, 'mysite/passenger_details.html', {'passenger': passenger})
+                return render(request, 'mysite/index.html', {'form': form, 'section': 'index', })
     else:
         form = HomePageForm()
     return render(request, 'mysite/index.html', {'form': form, 'section': 'index'})
@@ -39,20 +39,24 @@ def index(request):
 
 def passengerDetails(request, national_id):
     passenger = get_object_or_404(Passenger, national_id=national_id)
+    one_week_from_now = passenger.created + timedelta(days=6)
     is_within_7_days = True
     now = timezone.now()
-    
+    print(now, '*************', one_week_from_now)
     delta = now - passenger.created
-    print(f'{now}--------{delta}')
     if delta <= timedelta(days=7):
         is_within_7_days = False
-    return render(request, 'mysite/passenger_details.html', {'passenger': passenger, 'is_within_7_days': is_within_7_days})
+    return render(request, 'mysite/passenger_details.html', 
+                  {'passenger': passenger, 'is_within_7_days': is_within_7_days, 'one_week_from_now': one_week_from_now})
 
 
 def createPassenger(request):
     if request.method == 'POST':
         form = PassengerModelForm(request.POST)
-        if form.is_valid():
+        if not form.is_valid():
+            return render(request, 'mysite/create_new_passenger.html', {'form': form, 'section': 'new_passenger'})
+
+        else:
             form.save()
             return redirect('mysite:index')
 
@@ -60,6 +64,9 @@ def createPassenger(request):
         form = PassengerModelForm()
         return render(request, 'mysite/create_new_passenger.html', {'form': form, 'section': 'new_passenger'})
 
+def passengerList(request):
+    passengers = Passenger.objects.all()
+    return render(request, 'mysite/passenger_list.html', {'passengers': passengers, 'section': 'passenger_list'})
 
 def passengerEdit(request, national_id):
     print(national_id, '********************')
@@ -135,16 +142,17 @@ def companyDelete(request, company_number):
 def getPassengerPDF(request, national_id):
     # Get some data from your Django application
     passenger = Passenger.objects.get(national_id=national_id)
-    data = {}
+    company_number = passenger.company.number
 
+    data = {'passenger': passenger, 'company_number': company_number}
     # Render the HTML template using the data
     html_string = render_to_string(
-        'mysite/pdf/pdf2.html', {'passenger': passenger})
+        'mysite/pdf/pdf2.html', data)
 
     # Generate a PDF response using WeasyPrint
     response = WeasyTemplateResponse(request=request,
                                      template='mysite/pdf/pdf2.html',
-                                     context={'passenger': passenger})
+                                     context=data)
 
     # Set the response headers
     response['Content-Disposition'] = f'attachment; filename="{passenger.arabic_name}.pdf"'

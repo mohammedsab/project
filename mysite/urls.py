@@ -11,6 +11,7 @@ urlpatterns = [
     path("pdf/<str:national_id>/",
          views.index, name="detail_pdf"),
     path('new_passenger/', views.createPassenger, name='new_passenger'),
+    path("passengers/", views.passengerList, name="passengerList"),
     path('edit_passenger/<str:national_id>/',
          views.passengerEdit, name='passengerEdit'),
     path('delete_passenger/<str:national_id>/',
@@ -25,6 +26,6 @@ urlpatterns = [
 
     path('passenger/pdf/<str:national_id>/',
          views.getPassengerPDF, name='passenger_pdf'),
-    path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),
+#     path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),
 
 ]
