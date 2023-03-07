@@ -15,19 +15,14 @@ class Company(models.Model):
 
 
 class Passenger(models.Model):
-    CHOICES = (
-        ('option1', 'Option 1'),
-        ('option2', 'Option 2'),
-        ('option3', 'Option 3'),
-    )
     arabic_name = models.CharField(max_length=150)
     english_name = models.CharField(max_length=150)
     national_id = models.CharField(max_length=14, unique=True)
     data_of_birth = models.DateField()
-    passport_number = models.CharField(max_length=8, unique=True)
+    passport_number = models.CharField(max_length=9, unique=True)
     passport_start = models.DateField()
     passport_end = models.DateField()
-    visa_type = models.CharField(max_length=150, choices=CHOICES)
+    visa_type = models.CharField(max_length=150, default='زيارة شخصية')
     visa_number = models.CharField(max_length=150)
     visa_start = models.DateField()
     visa_end = models.DateField()

@@ -128,11 +128,11 @@ info: {{passenger.arabic_name}}
             {% csrf_token %}
             <button type="submit" class="button delete">تعديل بيانات</button>
         </form> -->
-    <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
+    <!-- <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
         {% csrf_token %}
         <button type="submit" class="button delete"
             onclick="return confirmDelete('{{ passenger.arabic_name }}');">حذف</button>
-    </form>
+    </form> -->
 </div>
 {% endif %}
 

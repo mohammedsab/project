@@ -1,15 +1,12 @@
 from django.utils import timezone
 from datetime import timedelta
-import qrcode
 from django_weasyprint import WeasyTemplateResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import HttpResponse
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.conf import settings
 
-import weasyprint
 
 
 from .models import Passenger, Company
@@ -42,7 +39,6 @@ def passengerDetails(request, national_id):
     one_week_from_now = passenger.created + timedelta(days=6)
     is_within_7_days = True
     now = timezone.now()
-    print(now, '*************', one_week_from_now)
     delta = now - passenger.created
     if delta <= timedelta(days=7):
         is_within_7_days = False
@@ -66,10 +62,15 @@ def createPassenger(request):
 
 def passengerList(request):
     passengers = Passenger.objects.all()
+    if request.method == 'GET':
+        search = request.GET.get('search')
+        if search:
+            passengers = passengers.filter(Q(national_id__icontains=search) | 
+                                           Q(passport_number__icontains=search) | 
+                                           Q(visa_number__icontains=search)).first()
     return render(request, 'mysite/passenger_list.html', {'passengers': passengers, 'section': 'passenger_list'})
 
 def passengerEdit(request, national_id):
-    print(national_id, '********************')
     passenger = get_object_or_404(Passenger, national_id=national_id)
     if request.method == 'POST':
         form = PassengerModelForm(request.POST, instance=passenger)
@@ -78,7 +79,6 @@ def passengerEdit(request, national_id):
             return redirect('mysite:index')
     else:
         form = PassengerModelForm(instance=passenger)
-        print(form)
     return render(request, 'mysite/create_new_passenger.html', {'form': form, 'passenger': passenger, 'section': 'new_passenger'})
 
 
@@ -86,7 +86,7 @@ def passengerDelete(request, national_id):
     passenger = get_object_or_404(Passenger, national_id=national_id)
     if request.method == 'POST':
         passenger.delete()
-        return redirect('mysite:index')
+        return redirect('mysite:passengerList')
     # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
 
 

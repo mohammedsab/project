@@ -1,6 +1,6 @@
 from django import forms
 from captcha.fields import ReCaptchaField
-
+from django.utils import timezone
 
 from .models import Passenger, Company
 
@@ -16,13 +16,6 @@ class HomePageForm(forms.Form):
 
 
 class PassengerModelForm(forms.ModelForm):
-    CHOICES = (
-        ('option1', 'Option 1'),
-        ('option2', 'Option 2'),
-        ('option3', 'Option 3'),
-    )
-    # visa_type = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect, label='نوع الفيزا')
-
     class Meta:
         model = Passenger
         fields = ('arabic_name', 'english_name', 'national_id', 'data_of_birth', 'passport_number',
@@ -32,18 +25,16 @@ class PassengerModelForm(forms.ModelForm):
             'english_name': 'الاسم الإنجليزية',
             'national_id': 'رقم القومي',
             'data_of_birth': 'تاريخ الميلاد',
-            'passport_number': 'رقم الجواز',
+            'passport_number': 'رقم جواز السفر',
             'passport_start': 'تاريخ الاصدار',
             'passport_end': 'تاريخ الانتهاء',
-            'visa_type': 'نوع الفيزا',
-            'visa_number': 'رقم الفيزا',
-            'visa_start': 'تاريخ الاصدار',
-            'visa_end': 'تاريخ الانتهاء',
+            'visa_type': 'نوع التأشيرا',
+            'visa_number': 'رقم التأشيرا',
+            'visa_start': 'تاريخ اصدار التأشيرا',
+            'visa_end': 'تاريخ انتهاء التأشيرا',
             'company': 'الشركة',
         }
         widgets = {
-            'national_id': forms.NumberInput(attrs={'type': 'number'}),
-            'visa_number': forms.NumberInput(attrs={'type': 'number'}),
             'data_of_birth': forms.DateInput(attrs={'type': 'date'}),
             'passport_start': forms.DateInput(attrs={'type': 'date'}),
             'passport_end': forms.DateInput(attrs={'type': 'date'}),
@@ -59,7 +50,7 @@ class PassengerModelForm(forms.ModelForm):
 
     def clean_passport_number(self):
         passport_number = self.cleaned_data['passport_number']
-        if not passport_number.isalnum() or len(passport_number) != 8:
+        if not passport_number.isalnum() or len(passport_number) != 9:
             raise forms.ValidationError('يجب ان يكون رقم جواز السفر 8 فقط')
         return passport_number
 
@@ -69,33 +60,31 @@ class PassengerModelForm(forms.ModelForm):
             raise forms.ValidationError('يجب ان يكون رقم فيزا السفر 10 فقط')
         return visa_number
 
-    def clean_passport_start(self):
-        passport_start = self.cleaned_data['passport_start']
-        if passport_start and passport_start < self.instance.created.date():
-            raise forms.ValidationError(
-                'يجب ان يكون التاريخ قبل اليوم')
-        return passport_start
+    
+    # def clean_passport_end(self):
+    #     passport_end = self.cleaned_data['passport_end']
+    #     passport_start = self.cleaned_data.get('passport_start')
+    #     if passport_start and passport_end and passport_end < passport_start:
+    #         raise forms.ValidationError(
+    #             'يجب ان يكون التاريخ بعد اصدار جواز السفر')
+    #     return passport_end
 
-    def clean_passport_end(self):
-        passport_end = self.cleaned_data['passport_end']
-        if passport_end and passport_end < self.cleaned_data.get('passport_start'):
-            raise forms.ValidationError(
-                'يجب ان يكون التاريخ بعد اصدار جواز السفر')
-        return passport_end
+    # def clean_visa_start(self):
+    #     visa_start = self.cleaned_data['visa_start']
+    #     passport_start = self.cleaned_data.get('passport_start')
+    #     if passport_start and visa_start and visa_start < passport_start:
+    #         raise forms.ValidationError(
+    #             'يجب ان يكون التاريخ بعد اصدار جواز السفر')
+    #     return visa_start
 
-    def clean_visa_start(self):
-        visa_start = self.cleaned_data['visa_start']
-        if visa_start and visa_start < self.cleaned_data.get('passport_start'):
-            raise forms.ValidationError(
-                'يجب ان يكون التاريخ بعد اصدار جواز السفر')
-        return visa_start
 
-    def clean_visa_end(self):
-        visa_end = self.cleaned_data['visa_end']
-        if visa_end and visa_end < self.cleaned_data.get('visa_start'):
-            raise forms.ValidationError(
-                'يجب ان يكون التاريخ بعد اصدار التأشيرة')
-        return visa_end
+    # def clean_visa_end(self):
+    #     visa_end = self.cleaned_data['visa_end']
+    #     visa_start = self.cleaned_data.get('visa_start')
+    #     if visa_start and visa_end and visa_end < visa_start:
+    #         raise forms.ValidationError(
+    #             'يجب ان يكون التاريخ بعد اصدار التأشيرة')
+    #     return visa_end
 
 
 class CompanyForm(forms.ModelForm):

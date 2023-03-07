@@ -60,6 +60,10 @@
             flex-direction: column;
             align-items: stretch;
         }
+
+        th {
+            width: 90px;
+        }
     }
 
 
@@ -97,6 +101,10 @@
         height: 30px;
     }
 
+    th {
+        width: 350px;
+    }
+
 
 
     /* Red */
@@ -104,48 +112,91 @@
 {% endblock style_sheet %}
 
 {% block content %}
-<table id="passengers">
-    <tr>
-        <th>الاسم</th>
-        <th>رقم الجواز </th>
-        <th>تاريخ التسجيل</th>
-        <th></th>
-        <th></th>
-        <th></th>
-    </tr>
-    {% for passenger in passengers %}
+<form class="form-inline" method="get">
+    <label for="id_name">اسم الشركة</label>
+    <input type="text" name="search" maxlength="50" required id="id_name">
+    <button type="submit">بحث</button>
+</form>
 
-    <tr>
-        <td>{{passenger.arabic_name}}</td>
-        <td>{{passenger.passport_number}}</td>
-        <td>{{passenger.created}}</td>
-<td>
-    <a href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
-        <img class="pass-btn" src="{% static 'image/download.png' %}" alt="">
-    </a>
-</td>
-        <td>
+{% if passengers %}
+    <table id="passengers">
+        <tr>
+            <th class="th-content">الاسم</th>
+            <th class="th-content">رقم الجواز </th>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        </tr>
+    
+        {% if passengers|length == 1 %}
+            <tr>
+                <td>{{passengers.arabic_name}}</td>
+                <td><a href="{% url 'mysite:passenger_details' passengers.national_id %}">{{passengers.passport_number}}</a></td>
+                <td>
+                    <a href="{% url 'mysite:passenger_pdf' passengers.national_id %}" target="_blank">
+                        <img class="pass-btn" src="{% static 'image/download.png' %}" alt="">
+                    </a>
+                </td>
+                <td>
             
-            <a href="{% url 'mysite:company_edit' passenger.national_id %}">
-                <img class="pass-btn" src="{% static 'image/edit.png' %}" alt="">
-            </a>
+                    <a href="{% url 'mysite:passengerEdit' passengers.national_id %}">
+                        <img class="pass-btn" src="{% static 'image/edit.png' %}" alt="">
+                    </a>
+            
+            
+                </td>
+                <form method="POST" action="{% url 'mysite:passengerDelete' passengers.national_id %}">
+                    {% csrf_token %}
+                    <td>
+                        <button type="submit" class="button delete" onclick="return confirmDelete('{{ passengers.arabic_name}}');">
+                            <img class="pass-btn" src="{% static 'image/delete.png' %}" alt="">
+                        </button>
+                    </td>
+                </form>
+            
+            </tr>
+        {% else %}
+        {% for passenger in passengers %}
+            <tr>
+                <td>{{passenger.arabic_name}}</td>
+                <td><a href="{% url 'mysite:passenger_details' passenger.national_id %}">{{passenger.passport_number}}</a></td>
+                <td>
+                    <a href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
+                        <img class="pass-btn" src="{% static 'image/download.png' %}" alt="">
+                    </a>
+                </td>
+                <td>
+        
+                    <a href="{% url 'mysite:passengerEdit' passenger.national_id %}">
+                        <img class="pass-btn" src="{% static 'image/edit.png' %}" alt="">
+                    </a>
+        
+        
+                </td>
+                <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
+                    {% csrf_token %}
+                    <td>
+                        <button type="submit" class="button delete"
+                            onclick="return confirmDelete('{{ passenger.arabic_name}}');">
+                            <img class="pass-btn" src="{% static 'image/delete.png' %}" alt="">
+                        </button>
+                    </td>
+                </form>
+        
+            </tr>
+        {% endfor %}
+        {% endif %}
+
+    </table>
+{% else %}
+<div>
+    <p style="text-align: center;">لا يوجد بيانات لهذا العميل
+</p>
+</div>
+{% endif %}
 
 
-        </td>
-        <form method="POST" action="{% url 'mysite:passengerDelete' passenger.national_id %}">
-            {% csrf_token %}
-            <td>
-                <button type="submit" class="button delete"
-                    onclick="return confirmDelete('{{ passenger.arabic_name}}');">
-                    <img class="pass-btn" src="{% static 'image/delete.png' %}" alt="">
-                </button>
-            </td>
-        </form>
 
-    </tr>
-
-    {% endfor %}
-</table>
 <script>
     function confirmDelete(name) {
         if (confirm("هل انت متأكد من حذف \"" + name + "\"؟")) {
