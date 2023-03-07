@@ -122,22 +122,7 @@ def companyDelete(request, company_number):
     if request.method == 'POST':
         company.delete()
         return redirect('mysite:company_list')
-    # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
-
-
-# def generate_qrcode(request):
-#     # assuming product number is passed as a GET parameter
-#     passenger_url = request.GET.get('passenger_url')
-#     qr = qrcode.QRCode(version=15, box_size=3, border=2)
-#     qr.add_data(f'{passenger_url}')
-#     qr.make(fit=True)
-#     img = qr.make_image(fill_color="black", back_color="white")
-#     # width, height = img.size
-#     # img = img.resize((width*4, height*4), resample=0)
-#     response = HttpResponse(content_type="image/png")
-#     img.save(response, "PNG")
-#     return response
-
+    
 
 def getPassengerPDF(request, national_id):
     # Get some data from your Django application
