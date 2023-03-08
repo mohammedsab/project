@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{passenger.arabic_name}}</title>
+    <link rel="shortcut icon" href="{% static 'image/main-logo.png' %}" type="image/x-icon">
     <meta name="passenger details" content="information about passenger visa.">
     <style>
         @page {
@@ -17,12 +18,12 @@
 
         @font-face {
             font-family: 'Sakkal_Majalla';
-            src: url("static/fonts/Sakkal_Majalla.ttf");
+            src: url('{% static "fonts/Sakkal_Majalla.ttf" %}' );
         }
 
         @font-face {
             font-family: 'Sakkal_Majalla_Bold';
-            src: url("static/fonts/Sakkal_Majalla_Bold.ttf");
+            src: url('{% static "fonts/Sakkal_Majalla_Bold.ttf" %}');
         }
 
         * {
@@ -154,12 +155,12 @@
 <body>
     <header>
         <div class="first-header">
-            <img src='static/image/barcode.png' alt="barcode">
+            <img src="{% static 'image/barcode.jpg' %}" alt="barcode">
         </div>
         <div class="second-header">
             <div></div>
-            <img class="main-logo" src='static/image/main-logo.png' alt="البوابة المصرية للعمرات">
-            <img class="secondry-logo" src='static/image/ministry.png' alt="وزارة السياحة">
+            <img class="main-logo" src='static/image/main-logo.jpg' alt="البوابة المصرية للعمرات">
+            <img class="secondry-logo" src='static/image/ministry.jpg' alt="وزارة السياحة">
         </div>
     </header>
     <main>
