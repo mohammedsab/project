@@ -17,14 +17,12 @@
 
         @font-face {
             font-family: 'Sakkal_Majalla';
-            src: local('Sakkal_Majalla'),
-            url('{% static "fonts/Sakkal_Majalla.ttf" %}');
+            src: url("static/fonts/Sakkal_Majalla.ttf");
         }
 
         @font-face {
             font-family: 'Sakkal_Majalla_Bold';
-            src: local('Sakkal_Majalla_Bold'),
-            url('{% static "fonts/Sakkal_Majalla_Bold.ttf" %}');
+            src: url("static/fonts/Sakkal_Majalla_Bold.ttf");
         }
 
         * {
@@ -100,7 +98,7 @@
             margin-left: 30px;
             font-size: 20px;
             line-height: 0;
-            
+
         }
 
         td {
@@ -156,12 +154,12 @@
 <body>
     <header>
         <div class="first-header">
-            <img src="{% static 'image/barcode.png' %}" alt="barcode">
+            <img src='static/image/barcode.png' alt="barcode">
         </div>
         <div class="second-header">
             <div></div>
-            <img class="main-logo" src="{% static 'image/main-logo.png' %}" alt="البوابة المصرية للعمرات">
-            <img class="secondry-logo" src="{% static 'image/ministry.png' %}" alt="وزارة السياحة">
+            <img class="main-logo" src='static/image/main-logo.png' alt="البوابة المصرية للعمرات">
+            <img class="secondry-logo" src='static/image/ministry.png' alt="وزارة السياحة">
         </div>
     </header>
     <main>
