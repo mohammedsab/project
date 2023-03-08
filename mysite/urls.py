@@ -24,6 +24,9 @@ urlpatterns = [
     path('company/<str:company_number>/',
          views.companyDelete, name='companyDelete'),
 
+    path("passenger/pdf/<str:national_id>/",
+         views.displayPDF, name="displayPDF"),
+
     path('passenger/pdf/<str:national_id>/',
          views.getPassengerPDF, name='passenger_pdf'),
 #     path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),

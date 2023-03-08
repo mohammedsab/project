@@ -1,3 +1,4 @@
+from weasyprint import HTML
 from django.utils import timezone
 from datetime import timedelta
 from django_weasyprint import WeasyTemplateResponse
@@ -6,7 +7,6 @@ from django.contrib import messages
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.conf import settings
-
 
 
 from .models import Passenger, Company
@@ -42,7 +42,7 @@ def passengerDetails(request, national_id):
     delta = now - passenger.created
     if delta <= timedelta(days=7):
         is_within_7_days = False
-    return render(request, 'mysite/passenger_details.html', 
+    return render(request, 'mysite/passenger_details.html',
                   {'passenger': passenger, 'is_within_7_days': is_within_7_days, 'one_week_from_now': one_week_from_now})
 
 
@@ -60,15 +60,17 @@ def createPassenger(request):
         form = PassengerModelForm()
         return render(request, 'mysite/create_new_passenger.html', {'form': form, 'section': 'new_passenger'})
 
+
 def passengerList(request):
     passengers = Passenger.objects.all()
     if request.method == 'GET':
         search = request.GET.get('search')
         if search:
-            passengers = passengers.filter(Q(national_id__icontains=search) | 
-                                           Q(passport_number__icontains=search) | 
+            passengers = passengers.filter(Q(national_id__icontains=search) |
+                                           Q(passport_number__icontains=search) |
                                            Q(visa_number__icontains=search)).first()
     return render(request, 'mysite/passenger_list.html', {'passengers': passengers, 'section': 'passenger_list'})
+
 
 def passengerEdit(request, national_id):
     passenger = get_object_or_404(Passenger, national_id=national_id)
@@ -122,7 +124,17 @@ def companyDelete(request, company_number):
     if request.method == 'POST':
         company.delete()
         return redirect('mysite:company_list')
-    
+
+
+def displayPDF(request, national_id):
+    # Get some data from your Django application
+    passenger = Passenger.objects.get(national_id=national_id)
+    company_number = passenger.company.number
+
+    data = {'passenger': passenger, 'company_number': company_number}
+    # Render the HTML template using the data
+    return render(request, 'mysite/pdf/pdf.html', data)
+
 
 def getPassengerPDF(request, national_id):
     # Get some data from your Django application
