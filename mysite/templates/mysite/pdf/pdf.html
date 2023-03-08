@@ -152,7 +152,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 310px;
         }
 
         .image-container img {
@@ -234,11 +234,11 @@
     </p>
 
 
-    {% comment %}
+   
     <div class="image-container">
-        <img src="{% url 'mysite:generate_qrcode' %}?passenger_url={{ passenger.get_absolute_url }}" alt="QR Code">
+        <img src="{% static 'image/qrcode.png' %}" alt="QR Code">
     </div>
-    {% endcomment %}
+   
 
 
 
