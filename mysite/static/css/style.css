@@ -202,8 +202,7 @@ label {
     color: #898989;
     position: absolute;
     line-height: 18px;
-    /* padding-bottom: 20px; */
-    /* margin-bottom: 6px ; */
+   
 }
 
 .input-icon img {
@@ -329,13 +328,9 @@ th {
 
     text-decoration: none;
     border-radius: 5px;
-    /* Remove borders */
     color: white;
-    /* Add a text color */
     padding: 14px 35px;
-    /* Add some padding */
     cursor: pointer;
-    /* Add a pointer cursor on mouse-over */
 }
 
 .success {
