@@ -9,7 +9,7 @@
     <title>{{passenger.arabic_name}}</title>
     <link rel="shortcut icon" href="{% static 'image/main-logo.png' %}" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-    
+
     <meta name="passenger details" content="information about passenger visa.">
     <style>
         @page {
@@ -226,48 +226,22 @@
         </tr>
     </table>
 
-    
-        <p class="end-title">إلـي مصلـحة الـجوازات والـهـجرة والـجنسية:</p>
-    
+
+    <p class="end-title">إلـي مصلـحة الـجوازات والـهـجرة والـجنسية:</p>
+
     <p class="end">يرجـى الاحاطة بأن هذه الـموافقة صـحيحة وصادرة من بوابة العمرة المصرية وتمت مراجعتـها والتأكد من صحة
         التأشيـرة.
     </p>
 
 
-   
+
     <div class="image-container">
         <img src="{% static 'image/qrcode.png' %}" alt="QR Code">
     </div>
-   
 
 
 
 
-    <script>
-        // Wait for the page to load
-        window.addEventListener("load", function () {
-            // Create a new jsPDF instance
-            const doc = new jsPDF();
-            // Add the HTML content of the page to the PDF
-            doc.html(document.body, {
-                callback: function () {
-                    // Save the PDF file with the name "document.pdf"
-                    doc.save("document.pdf");
-                }
-            });
-        });
-
-        const pdfBtn = document.getElementById("pdf-btn");
-            pdfBtn.addEventListener("click", function () {
-                const doc = new jsPDF();
-                const content = document.querySelector("body");
-                doc.html(content, {
-                    callback: function () {
-                        doc.save("document.pdf");
-                    }
-                });
-            });
-    </script>
 
 </body>
 

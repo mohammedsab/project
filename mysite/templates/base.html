@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     {% block style_sheet %}
         
     {% endblock style_sheet %}
@@ -52,22 +53,7 @@
             </div>
             <div>
                 <img src="{% static 'image/Hotline.png' %}" alt="" class="hotline">
-            </div>
-
-            
-            {% if request.user.is_authenticated %}
-                <!-- <div class="icon">
-                    <button onclick="myFunction()" class="dropbtn">
-                        <img src="{% static 'image/icon-menu.png' %}" alt="">
-                    </button>
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="#home">Home</a>
-                        <a href="#about">About</a>
-                        <a href="#contact">Contact</a>
-                    </div>
-                </div> -->
-            {% endif %}
-                
+            </div>            
             
         </header>
     </div>

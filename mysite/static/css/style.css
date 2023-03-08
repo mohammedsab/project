@@ -446,17 +446,15 @@ th {
         display: none;
     }
 
-    .topnav {
-        display: none;
-    }
-
     .topnav a {
-        display: none;
-    }
-
-    .icon {
         float: left;
         display: block;
+        color: black;
+        text-align: center;
+        padding: 4px 4px;
+        text-decoration: none;
+        font-size: 14px;
+        border-bottom: 3px solid transparent;
     }
 
     .table-wrapper {
@@ -482,13 +480,15 @@ th {
         display: none;
     }
 
-    .topnav {
-        display: none;
-    }
-
-    .icon {
+    .topnav a {
         float: left;
         display: block;
+        color: black;
+        text-align: center;
+        padding: 12px 3px;
+        text-decoration: none;
+        font-size: 10px;
+        border-bottom: 3px solid transparent;
     }
 
     .table-wrapper {
