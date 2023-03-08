@@ -97,7 +97,27 @@ left: 0px; */
     border-bottom: 3px solid transparent;
 }
 
-.topnav a:hover {
+.topnav-no a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-bottom: 3px solid transparent;
+}
+
+.topnav-no a:hover {
+    border-bottom: 3px solid #BCA556;
+}
+
+topnav a:hover {
+    border-bottom: 3px solid #BCA556;
+}
+
+.topnav-no a.active {
+    color: #BCA556;
     border-bottom: 3px solid #BCA556;
 }
 
@@ -202,7 +222,6 @@ label {
     color: #898989;
     position: absolute;
     line-height: 18px;
-   
 }
 
 .input-icon img {
@@ -441,6 +460,10 @@ th {
         display: none;
     }
 
+    .topnav-no a {
+        display: none;
+    }
+
     .topnav a {
         float: left;
         display: block;
@@ -472,6 +495,10 @@ th {
     }
 
     .hotline {
+        display: none;
+    }
+
+    .topnav-no a {
         display: none;
     }
 

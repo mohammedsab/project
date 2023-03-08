@@ -40,7 +40,13 @@
             <div>
                 <a href="{% url 'mysite:index' %}"><img src="{% static 'image/logo-header.png' %}" alt="" class="logo"></a>
             </div>
-            <div class="topnav">
+            <div class="
+            {% if request.user.is_authenticated %}
+                topnav
+                {% else %}
+                topnav-no
+            {% endif %}
+                ">
         
                 {% if request.user.is_authenticated %}
                 <a {% if section == "passenger_list" %} class="active" {% endif %} href="{% url 'mysite:passengerList' %}">العملاء</a>
@@ -53,7 +59,9 @@
             </div>
             <div>
                 <img src="{% static 'image/Hotline.png' %}" alt="" class="hotline">
-            </div>            
+            </div>
+
+                
             
         </header>
     </div>
@@ -85,24 +93,6 @@
 
         
     <script>
-            $(document).ready(function () {
-                // Calculate and update passport_end field when passport_start or passport_duration changes
-                $('#passport_start, #passport_duration').on('change', function () {
-                    var start = new Date($('#passport_start').val());
-                    var years = parseInt($('#passport_duration').val());
-                    if (isNaN(start.getTime()) || isNaN(years)) {
-                        $('#passport_end').val('');
-                        return;
-                    }
-                    var end = new Date(start.getFullYear() + years, start.getMonth(), start.getDate() - 1);
-                    var yyyy = end.getFullYear().toString();
-                    var mm = (end.getMonth() + 1).toString().padStart(2, '0');
-                    var dd = end.getDate().toString().padStart(2, '0');
-                    var formattedDate = yyyy + '-' + mm + '-' + dd;
-                    $('#passport_end').val(formattedDate);
-                });
-            });
-        
         // const todayDate = new Date().toLocaleDateString();
         // document.getElementById("today-date").innerHTML = todayDate;
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
