@@ -15,7 +15,7 @@ from .forms import HomePageForm, CompanyForm, PassengerModelForm
 # Create your views here.
 
 
-def index(request):
+def index(request, anytext='0-1088-eyJpdiI6ImY4YU9iYkloenpqNTlZcjJCRGEyVmc9PSIsInZhbHVlIjoiZE5aaFZVXC9NaUxPS0dUcHJJUWVrWTI3aXllbUQwemUzRVc0UjZWbEtaY1djbmlHdU9ia0lSQmRVb0lCK1g1N2NnTzZiaU11dWlXWWFTajIySmRDNnFDUTZvUmlnM2NxU3p2dGpFT2NzRlJoUXo1dDFyWFwvcjltN1Rtek5DQ1hTMzBlQXpZNDZLaTYrS1FzNUsyNTNSdm1xUWFNb2ZwaTJHVmNLSVVTYk5ITHIyK1A4ZjkxTG41SnYrQmE5T2RaMFwvOGdGZXZLaVREemVPTW9ZUFlxQTN1NDRyXC9lMHJ5MlZLV3hheXJmM3FzVkpaWTFLXC9zZVwvcVNxSEppek9NelFVa1dnM21zNU9tcXBZWGJRUnNLdHB2NldmdlFQRElRbDZcL3VZNlwvbUNsN1pSb1dPd1A3cGpaVVFMbFdGS1dRNCtEWWZGeHlsT09aK1wvQ2FSeFpvMEJBRm5FTGl1c2ZGVkkweUZHRzhtK01mdWtcL0g5emVadVB5bHBIam9hSFV2T2doMDlCRXQweldJT2RRQXJrVTR0bDlrakZBb2VGUXo5WlFWVlJHZWVBVUxnYjNaRGtUTDI0MjNMWjVPOXl1cWVXN0NUMk9lQjMrVVNJZnhTVTlnXC8wVUlwUDFHZEFKMmdSeUxVTGlhZlBTQnlFaDhXZ0N3dzhBRzlOb05rZ3ZsQnE3S2hqYWJVQWlDdGN2eFFrZlwvXC93dnhqeGVadm5FRTl0bG1wRnBFSHlicmtDb0YrZHoxS01ZRU5wdlVyd3pnRk1PaEdRWU1BZk9HQ1NUOHIrSEhIXC8ySTVIWHhCc3FTUDJodGNsSkJmZElQNFdkY2VwY3dOQVZaVTdBRDNjQnpKVzhDWHV4QldcL05tUGo1ckdTYlh6ZXJzRUpTUVpkamVkMXFQSjd4dmJlNTdTN1k9IiwibWFjIjoiYjE1ZjJkM2I5YmI3Nzk1NjMzMDhiMTZkYmRiMDY0NDYzN2QyYzk3ODU2YzBjMDlmMjYyZWM5Njg4ZmJhYmVlMiJ9'):
     if request.method == 'POST':
         form = HomePageForm(request.POST)
         if form.is_valid():
@@ -62,13 +62,13 @@ def createPassenger(request):
 
 
 def passengerList(request):
-    passengers = Passenger.objects.all()
+    passengers = Passenger.objects.filter(deleted = False)
     if request.method == 'GET':
         search = request.GET.get('search')
         if search:
             passengers = passengers.filter(Q(national_id__icontains=search) |
                                            Q(passport_number__icontains=search) |
-                                           Q(visa_number__icontains=search)).first()
+                                           Q(visa_number__icontains=search))
     return render(request, 'mysite/passenger_list.html', {'passengers': passengers, 'section': 'passenger_list'})
 
 
@@ -87,18 +87,16 @@ def passengerEdit(request, national_id):
 def passengerDelete(request, national_id):
     passenger = get_object_or_404(Passenger, national_id=national_id)
     if request.method == 'POST':
-        passenger.delete()
+        passenger.deleted = True
+        passenger.save()
         return redirect('mysite:passengerList')
-    # return render(request, 'company_confirm_delete.html', {'company': company, 'section': 'company'})
 
 
 def companyList(request):
-
     if request.method == 'POST':
         form = CompanyForm(request.POST)
         if form.is_valid():
             form.save()
-            # return render(request, 'mysite/company/company_list.html', { 'companies': companies, 'section': 'company'})
 
             return redirect('mysite:company_list')
 
@@ -134,26 +132,3 @@ def displayPDF(request, national_id):
     data = {'passenger': passenger, 'company_number': company_number}
     # Render the HTML template using the data
     return render(request, 'mysite/pdf/pdf.html', data)
-
-
-def getPassengerPDF(request, national_id):
-    # Get some data from your Django application
-    passenger = Passenger.objects.get(national_id=national_id)
-    company_number = passenger.company.number
-
-    data = {'passenger': passenger, 'company_number': company_number}
-    # Render the HTML template using the data
-    html_string = render_to_string(
-        'mysite/pdf/pdf2.html', data)
-
-    # Generate a PDF response using WeasyPrint
-    response = WeasyTemplateResponse(request=request,
-                                     template='mysite/pdf/pdf2.html',
-                                     context=data)
-
-    # Set the response headers
-    response['Content-Disposition'] = f'attachment; filename="{passenger.arabic_name}.pdf"'
-    response['Content-Type'] = 'application/pdf'
-
-    # Return the response
-    return response

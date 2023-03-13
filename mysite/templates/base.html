@@ -40,13 +40,8 @@
             <div>
                 <a href="{% url 'mysite:index' %}"><img src="{% static 'image/logo-header.png' %}" alt="" class="logo"></a>
             </div>
-            <div class="
             {% if request.user.is_authenticated %}
-                topnav
-                {% else %}
-                topnav-no
-            {% endif %}
-                ">
+            <div class="topnav">
         
                 {% if request.user.is_authenticated %}
                 <a {% if section == "passenger_list" %} class="active" {% endif %} href="{% url 'mysite:passengerList' %}">العملاء</a>
@@ -57,6 +52,21 @@
                 {% endif %}
                 <a {% if section == "index" %}class="active" {% endif %} href="{% url 'mysite:index' %}">الاستعلام</a>
             </div>
+            {% else %}
+            <div class="topnav-no">
+        
+                {% if request.user.is_authenticated %}
+                <a {% if section == "passenger_list" %} class="active" {% endif %} href="{% url 'mysite:passengerList' %}">العملاء</a>
+                <a {% if section == "company" %} class="active" {% endif %} href="{% url 'mysite:company_list' %}">الشركات</a>
+        
+                <a {% if section == 'new_passenger' %} class="active" {% endif %} href="{% url 'mysite:new_passenger' %}">اضافة
+                    مسافر</a>
+                {% endif %}
+                <a {% if section == "index" %}class="active" {% endif %} href="{% url 'mysite:index' %}">الاستعلام</a>
+            </div>
+                
+            {% endif %}
+                
             <div>
                 <img src="{% static 'image/Hotline.png' %}" alt="" class="hotline">
             </div>

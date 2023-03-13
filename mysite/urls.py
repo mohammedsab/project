@@ -6,6 +6,7 @@ app_name = 'mysite'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('<str:anytext>', views.index, name='index'),
     path('passenger/<str:national_id>',
          views.passengerDetails, name='passenger_details'),
     path("pdf/<str:national_id>/",
@@ -25,10 +26,5 @@ urlpatterns = [
          views.companyDelete, name='companyDelete'),
 
     path("passenger/pdf/<str:national_id>/",
-         views.displayPDF, name="displayPDF"),
-
-    path('passenger/pdf/<str:national_id>/',
-         views.getPassengerPDF, name='passenger_pdf'),
-#     path('generate-qrcode/', views.generate_qrcode, name='generate_qrcode'),
-
+         views.displayPDF, name="passenger_pdf"),
 ]
