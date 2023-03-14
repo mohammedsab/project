@@ -121,7 +121,7 @@ info: {{passenger.arabic_name}}
 {% if request.user.is_authenticated %}
 <!-- <button class="btn default" onclick="location.href='{% url 'mysite:detail_pdf' passenger.national_id %}'">حفظ الملف</button> -->
 <div class="admin-buttons">
-    <a class="btn default" href="{% url 'mysite:displayPDF' passenger.national_id %}" target="_blank">
+    <a class="btn default" href="{% url 'mysite:passenger_pdf' passenger.national_id %}" target="_blank">
         طباعة الملف
     </a>
     <!-- <form method="POST" action="{% url 'mysite:passengerEdit' passenger.national_id %}">
